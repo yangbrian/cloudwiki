@@ -40,7 +40,8 @@ var parser = function(input, hostAddress) {
 		return {'status':'failed','msg':typeof input}
 	if (hostAddress === undefined)
 		return {'status':'failed','msg':'hostAddress is undefined'}
-
+	var navlist = []
+	var counter = 0
 	var output = ""
 	var lines = input.split('\n')
 	for(var index in lines) {
@@ -58,6 +59,7 @@ var parser = function(input, hostAddress) {
 		// parse === head ===
 		if (line.match(/(={1,5})([\w+\s]+)={1,5}/g)) {
 			output += line.replace(/(={1,5})([\w+\s]+)={1,5}/g, function(match, p1, p2) {
+				navlist[counter++] = {'_id' : p2.trim(), 'level':p1.length}
 				return '<h'+p1.length+' id=\''+p2.trim().replace(/\s/g,'_')+'\'>'+p2.trim()+'</h'+p1.length+'>'
 			});
 			continue
@@ -79,8 +81,32 @@ var parser = function(input, hostAddress) {
 		output += '<p>'+line+'</p>'
 
 	}
-	return {'output' : output, 'status' : 'succeed'}
+	return {'output' : output, 'status' : 'succeed', 'navlist':navlist}
 
 }
+
+/**
+ * Recursive inserting node
+ * @param  {dict} parent the parent node
+ * @param  {dict} list   the current node
+ * @param  {Number} level  the level of current node (should in range from 1-5)
+ * @param  {dict} node   the node to be inserted should contain {'level':Number}
+ * @return {boolean}        true if inserting succeed
+ */
+// var addNode = function(parent,list,level, node) {
+
+// 	if (parent == {} || level == list['level']) {
+// 		parent[node] = {'level' : level};
+// 		return true;
+// 	}
+// 	var end = false;
+// 	for (var child in list) {
+// 		if (child !== 'level') 
+// 			end = _findParent(list, list[child], level, node)
+// 		if(end)
+// 			return true
+// 	}
+
+// }
 
 module.exports.parser = parser;
