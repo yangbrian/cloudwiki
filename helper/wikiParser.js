@@ -9,9 +9,7 @@
 	@address: host link address [[a|b]] will be b(link to host/a)
 
 	@return: a html format string
- */
-
-/*
+	
 	legency code for parse link
 	keep for future word token
  */
