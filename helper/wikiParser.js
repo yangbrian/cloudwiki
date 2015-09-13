@@ -107,4 +107,4 @@ var parser = function(input, hostAddress) {
 
 // }
 
-module.exports.parser = parser;
+module.exports.renderWiki = parser;
