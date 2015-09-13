@@ -4,14 +4,10 @@
  */
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/cloudwiki');
-
-var Article = mongoose.model('Article', {
-  title: String,
-  body: String
-});
+var Article = mongoose.model('Article');
 
 /**
  * Get article by name
@@ -47,7 +43,8 @@ router.post('/:title', function (req, res, next) {
     title: req.params.title.replace(/_/g, " ")
   }, {
     title: req.body.title || req.params.title.replace(/_/g, " "),
-    body: req.body.body
+    body: req.body.body,
+    time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
   }, function (err, number, raw) {
 
