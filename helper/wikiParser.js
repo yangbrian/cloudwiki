@@ -71,7 +71,7 @@ var parser = function(input, hostAddress) {
 	build a sidebar with given sections. The sidebar is collapsible
 	@navlist: 		the list that contains all sections sorted from top to down
 	@*attr: 		the attributes of * tag, such as 'class', but must not include 'id.' * is the name of certain tag.
-	@return: 		a HTML formatted string
+	@return: 		a HTML formatted navigation list in string
  */
 var makeSectionHtml = function(navlist,liattr,ulattr,aattr,divattr) {
 
@@ -101,7 +101,7 @@ var makeSectionHtml = function(navlist,liattr,ulattr,aattr,divattr) {
 				content = sec['content'];
 				
 				if (header['level'] > sec['level'] && once) {
-					content = '<li>'+'<div '+divattr+'>'+'<a href=#'+sec['_id'].replace(/ /g,'_')+' '+aattr+'>'+sec['_id']+'</a>'+'<span data-toggle="collapse" href="#'+sec['_id'].replace(' ','_')+counter+'" style="display: inline-block; width: 50%;"'+'<ul id='+sec['_id'].replace(/ /g,'_')+counter+' '+ulattr+'>'+header['content']+'</ul>'+'</div></li>';
+					content = '<li>'+'<div '+divattr+'>'+'<a href=#'+sec['_id'].replace(/ /g,'_')+' '+aattr+'>'+sec['_id']+'</a>'+'<span data-toggle="collapse" href="#'+sec['_id'].replace(' ','_')+counter+'" style="display: inline-block; width: 50%;">&nbsp;</span>'+'<ul id='+sec['_id'].replace(/ /g,'_')+counter+' '+ulattr+'>'+header['content']+'</ul>'+'</div></li>';
 					once = false;
 					counter++;
 				} else 
@@ -120,9 +120,9 @@ var makeSectionHtml = function(navlist,liattr,ulattr,aattr,divattr) {
 		output += stack[k]['content']
 	}
 
-	return '<ul class='+ulattr+'>'+output+'</ul>'
+	return '<ul '+ulattr+'>'+output+'</ul>'
 }
 
 
 module.exports.makeHtml = parser;
-module.exports.sectionToHtml = makeSectionHtml;
+module.exports.makeNavList = makeSectionHtml;
