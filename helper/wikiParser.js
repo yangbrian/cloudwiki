@@ -67,4 +67,62 @@ var parser = function(input, hostAddress) {
 }
 
 
+/*
+	build a sidebar with given sections. The sidebar is collapsible
+	@navlist: 		the list that contains all sections sorted from top to down
+	@*attr: 		the attributes of * tag, such as 'class', but must not include 'id.' * is the name of certain tag.
+	@return: 		a HTML formatted string
+ */
+var makeSectionHtml = function(navlist,liattr,ulattr,aattr,divattr) {
+
+	var counter = 0
+	var stack = []
+	var header = {}
+	var content = ""
+	var output = ''
+
+	for (var index in navlist.reverse()) {
+		sec = navlist[index]
+		sec['content'] = '<li '+liattr+' >'+'<a href=#'+sec['_id'].replace(/ /g,'_')+' '+aattr+'>'+sec['_id']+'</a></li>';
+
+		if (!stack.length) {
+			stack.push(sec);
+			continue;
+		}
+
+		//Merge 
+		if (stack[stack.length-1]['level'] >= sec['level']) {
+
+			var once = true;
+
+			while(stack[stack.length-1]['level'] >= sec['level']) {
+
+				header = stack.pop();
+				content = sec['content'];
+				
+				if (header['level'] > sec['level'] && once) {
+					content = '<li>'+'<div '+divattr+'>'+'<a href=#'+sec['_id'].replace(/ /g,'_')+' '+aattr+'>'+sec['_id']+'</a>'+'<span data-toggle="collapse" href="#'+sec['_id'].replace(' ','_')+counter+'" style="display: inline-block; width: 50%;"'+'<ul id='+sec['_id'].replace(/ /g,'_')+counter+' '+ulattr+'>'+header['content']+'</ul>'+'</div></li>';
+					once = false;
+					counter++;
+				} else 
+					content += header['content'];
+
+				sec['content'] = content;
+				
+			}
+		}
+		
+		stack.push(sec)
+
+	}
+
+	for (var k in stack) {
+		output += stack[k]['content']
+	}
+
+	return '<ul class='+ulattr+'>'+output+'</ul>'
+}
+
+
 module.exports.makeHtml = parser;
+module.exports.sectionToHtml = makeSectionHtml;
