@@ -26,7 +26,7 @@ router.get('/:title', function(req, res) {
           error: true
         });
 
-      var content = makeHtml(article.body);
+      var content = makeHtml(article.body,'/');
 
       console.log(article.body);
       res.render('article', {
