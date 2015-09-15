@@ -1,10 +1,15 @@
 @import "compass/css3";
 
 body {
-  padding: 50px;
   font: 14px 'Source Sans Pro', "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+@media (min-width: 768px) {
+  .navbar-collapse.collapse {
+    margin-bottom: 0;
+  }
 }
