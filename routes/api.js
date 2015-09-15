@@ -64,10 +64,30 @@ router.post('/:title', function (req, res, next) {
 
     if (!err && !number.n) {
 
-      status.status = 'ERROR'
-      return res.send(JSON.stringify(status))
+      if (req.params.title.replace(/_/g, " ") != req.body.title) {
+          status.status = 'ERROR'
+          return res.send(JSON.stringify(status))
+      }
 
-    } else {
+      var article = new Article({  
+        title: req.params.title.replace(/_/g, " "),   
+        body: req.body.body, 
+        time: moment().format('MMMM Do YYYY, h:mm:ss a')   
+      });    
+ 
+      article.save(function (err) {    
+        if (err) {   
+          console.log("\nError creating new article");   
+          status.status = 'ERROR-CREATE';    
+        } else {   
+          console.log("\nNew article - " + req.params.title + " created");   
+          status.status = 'CREATED';   
+        } 
+      }   
+
+      return res.send(JSON.stringify(status));
+
+  } else {
       return res.send(JSON.stringify(status));
     }
 
