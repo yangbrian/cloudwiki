@@ -82,10 +82,11 @@ router.post('/:title', function (req, res, next) {
         } else {   
           console.log("\nNew article - " + req.params.title + " created");   
           status.status = 'CREATED';   
-        } 
-      }   
+        }
 
-      return res.send(JSON.stringify(status));
+
+        return res.send(JSON.stringify(status));
+      });
 
   } else {
       return res.send(JSON.stringify(status));
