@@ -3,7 +3,7 @@ h3 Edit Article - #{title}
 form(id="editForm", method="post", action='/api/'+urlTitle class='form')
 	div.form-group.form-horizontal
 		label(for='title-form') Title 
-		input(id='title-form', name='title', type='text', class='form-control', placeholder="#{title}")
+		input(id='title-form', name='title', type='text', class='form-control', value="#{title}")
 	div.form-group
 		textarea(id='newText',rows='15', name="body", placeholder="Write your code here", class='form-control') #{body}
 	button(type="submit", class='btn btn-primary form-control' ) Submit

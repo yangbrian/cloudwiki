@@ -11,14 +11,14 @@ $(document).ready(function() {
       $('#editForm').on('submit', function(e) {
 
         e.preventDefault();
-        $.post('/api/' + title, $(this).serialize(), function() {
+
+        var newTitle = $('#editForm').find('input[name="title"]').val().replace(/ /g, "_");
+        $.post('/api/' + newTitle, $(this).serialize(), function() {
           $('#editForm').fadeOut(400, function() {
 
-            console.log('test');
-            $(this).remove();
 
             // I'll make this more elegant later, this works for now
-            location.reload();
+            window.location.href = '/' + newTitle;
 
           }); // end fade out
 
