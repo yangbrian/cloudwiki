@@ -1,5 +1,5 @@
 
-form(id="newPage", method="post", action="/wiki/new" class='form')
+form(id="newPage", method="post", action='/'+title class='form')
 	div.form-group.form-horizontal
 		label(for='title-form') Title 
 		input(id='title-form', name='title', type='text', class='form-control', placeholder="Title")
