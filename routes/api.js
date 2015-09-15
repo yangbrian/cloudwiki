@@ -66,7 +66,8 @@ router.post('/:title', function (req, res, next) {
 
       var article = new Article({
         title: req.params.title.replace(/_/g, " "),
-        body: req.body.body
+        body: req.body.body,
+        time: moment().format('MMMM Do YYYY, h:mm:ss a')
       });
 
       article.save(function (err) {

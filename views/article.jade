@@ -17,7 +17,14 @@ block content
                     .col-lg-12
                         h1 #{title}
                         #article !{ body }
-                        #footer Last Updated: !{ timestamp }
+
+                        #edit
+                            if !error
+                                button#editArticle.btn.btn-default(data-title='#{urlTitle}') Edit Article
+                                #footer Last Updated: !{ timestamp }
+                            else
+                                button#editArticle.btn.btn-default(data-title='#{urlTitle}') Create Article
+                                #footer This article does not exist yet.
         // /#page-content-wrapper
     // /#wrapper
     // jQuery

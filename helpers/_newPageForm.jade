@@ -1,8 +1,0 @@
-
-form(id="newPage", method="post", action='/'+title class='form')
-	div.form-group.form-horizontal
-		label(for='title-form') Title 
-		input(id='title-form', name='title', type='text', class='form-control', placeholder="Title")
-	div.form-group
-		textarea(id='newText',rows='15', name="content", placeholder="Write your code here", class='form-control') #{form_content}
-	button(type="submit", class='btn btn-primary form-control' ) Submit

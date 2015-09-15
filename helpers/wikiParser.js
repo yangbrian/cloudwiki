@@ -13,19 +13,19 @@
 var parser = function (input, hostAddress) {
 
   if (input === undefined || typeof input !== 'string')
-    return {'status': 'failed', 'msg': 'input should be type of string'}
+    return {'status': 'failed', 'msg': 'input should be type of string'};
 
   if (hostAddress === undefined)
-    return {'status': 'failed', 'msg': 'hostAddress is undefined'}
+    return {'status': 'failed', 'msg': 'hostAddress is undefined'};
 
-  var navlist = []
-  var counter = 0
-  var output = ""
+  var navlist = [];
+  var counter = 0;
+  var output = "";
   var lines = input.split('\n')
 
   for (var index in lines) {
 
-    var line = lines[index]
+    var line = lines[index];
 
     /*
      start to parse the line
@@ -33,8 +33,8 @@ var parser = function (input, hostAddress) {
 
     // parse p
     if (line === '') {
-      output += '</ br>'
-      continue
+      output += '</ br>';
+      continue;
     }
 
     // parse === head ===
@@ -53,7 +53,7 @@ var parser = function (input, hostAddress) {
           p1 = p1.substr(0, p1.length - 1);
         else
           p1 = p2;
-        return '<a href=' + hostAddress + '/' + p1.trim().replace(/\s/g, '_') + '>' + p2.trim() + '</a>';
+        return '<a href="/' + p1.trim().replace(/\s/g, '_') + '">' + p2.trim() + '</a>';
       });
       continue
     }
@@ -75,11 +75,11 @@ var parser = function (input, hostAddress) {
  */
 var makeSectionHtml = function (navlist, liattr, ulattr, aattr, divattr) {
 
-  var counter = 0
-  var stack = []
-  var header = {}
-  var content = ""
-  var output = ''
+  var counter = 0;
+  var stack = [];
+  var header = {};
+  var content = "";
+  var output = '';
 
   for (var index in navlist.reverse()) {
     sec = navlist[index]
@@ -121,7 +121,7 @@ var makeSectionHtml = function (navlist, liattr, ulattr, aattr, divattr) {
   }
 
   return '<ul ' + ulattr + '>' + output + '</ul>'
-}
+};
 
 /*
  a relative easy implement but work well
