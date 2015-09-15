@@ -14,7 +14,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         var newTitle = $('#editForm').find('input[name="title"]').val().replace(/ /g, "_");
-        $.post('/api/' + newTitle, $(this).serialize(), function() {
+        $.post('/api/' + title, $(this).serialize(), function() {
           $('#editForm').fadeOut(400, function() {
 
 
