@@ -68,7 +68,7 @@ var parser = function(input, hostAddress) {
 
 
 /*
-	build a sidebar with given sections. The sidebar is collapsible
+	build a sidebar with given sections. The sidebar is collapsible. not working well, need futher improvement
 	@navlist: 		the list that contains all sections sorted from top to down
 	@*attr: 		the attributes of * tag, such as 'class', but must not include 'id.' * is the name of certain tag.
 	@return: 		a HTML formatted navigation list in string
@@ -95,13 +95,13 @@ var makeSectionHtml = function(navlist,liattr,ulattr,aattr,divattr) {
 
 			var once = true;
 
-			while(stack[stack.length-1]['level'] >= sec['level']) {
+			while(stack.length && stack[stack.length-1]['level'] >= sec['level']) {
 
 				header = stack.pop();
 				content = sec['content'];
 				
 				if (header['level'] > sec['level'] && once) {
-					content = '<li>'+'<div '+divattr+'>'+'<a href=#'+sec['_id'].replace(/ /g,'_')+' '+aattr+'>'+sec['_id']+'</a>'+'<span data-toggle="collapse" href="#'+sec['_id'].replace(' ','_')+counter+'" style="display: inline-block; width: 50%;">&nbsp;</span>'+'<ul id='+sec['_id'].replace(/ /g,'_')+counter+' '+ulattr+'>'+header['content']+'</ul>'+'</div></li>';
+					content = '<li '+liattr+'>'+'<div '+divattr+'>'+'<a href=#'+sec['_id'].replace(/ /g,'_')+' '+aattr+'>'+sec['_id']+'</a>'+'<span data-toggle="collapse" href="#'+sec['_id'].replace(' ','_')+counter+'" style="display: inline-block; width: 50%;">&nbsp;</span>'+'<ul id='+sec['_id'].replace(/ /g,'_')+counter+' '+ulattr+'>'+header['content']+'</ul>'+'</div></li>';
 					once = false;
 					counter++;
 				} else 
@@ -123,6 +123,33 @@ var makeSectionHtml = function(navlist,liattr,ulattr,aattr,divattr) {
 	return '<ul '+ulattr+'>'+output+'</ul>'
 }
 
+/*
+	a relative easy implement but work well
+ */
+var indentNav = function(list) {
+
+	if (!list.length)
+		return "li\n\t no entries" 
+
+	var output = "";
+	var indent = "";
+	var min = 5;
+
+	for (var j in list) {
+		if (list[j]['level'] < min)
+			min = list[j]['level']
+	}
+
+	for (var i in list) {
+		var sec = list[i];
+		for (var j = 0; j < sec['level']-min; j++) {
+			indent += '&nbsp;&nbsp;'
+		}
+		output += 'li\n\ta(href="#'+sec['_id'].replace(/ /g,'_')+'") '+indent+sec['_id']+'\n';
+		indent = "";
+	}
+	return output;
+}
 
 module.exports.makeHtml = parser;
-module.exports.makeNavList = makeSectionHtml;
+module.exports.makeNavList = indentNav;

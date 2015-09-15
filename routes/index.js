@@ -1,4 +1,7 @@
 var express = require('express');
+var makeHtml = require('../helpers/wikiParser').makeHtml
+var makeNavList = require('../helpers/wikiParser').makeNavList
+var jade = require('jade')
 var router = express.Router();
 
 /* GET home page. */
@@ -23,10 +26,13 @@ router.get('/:title', function(req, res) {
           error: true
         });
 
+      var content = makeHtml(article.body,'/');
+
       console.log(article.body);
       res.render('article', {
         title: article.title,
-        body: article.body,
+        body: content['output'],
+        articleNav: jade.render(makeNavList(content['navlist'])),
         timestamp: article.time
       });
     });
