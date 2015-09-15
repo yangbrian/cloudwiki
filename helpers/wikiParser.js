@@ -128,7 +128,7 @@ var makeSectionHtml = function (navlist, liattr, ulattr, aattr, divattr) {
  */
 var indentNav = function (list) {
 
-  if (!list.length)
+  if (!list || !list.length)
     return "li\n  no entries"
 
   var output = "";

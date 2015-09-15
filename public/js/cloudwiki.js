@@ -1,6 +1,7 @@
 /* Edit functions */
 
 $(document).ready(function() {
+
   $('#editArticle').on('click', function() {
     var title = $(this).attr('data-title');
     $(this).fadeOut();
