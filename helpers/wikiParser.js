@@ -34,7 +34,7 @@ var parser = function(input, hostAddress) {
 		
 		// parse p
 		if (line == '' || line == '\r') {
-			output += '</p></ br>';
+			output += '</p><br />';
 			p = false;
 			continue;
 		}
@@ -66,8 +66,8 @@ var parser = function(input, hostAddress) {
 			p = true;
 		}
 
-		output += line;
-		
+		output += line.replace(/ /g,'&nbsp;');
+
 	}
 
 	if (p)
@@ -76,6 +76,8 @@ var parser = function(input, hostAddress) {
 	return {'output' : output, 'status' : 'succeed', 'navlist':navlist}
 
 }
+
+
 
 
 /*
