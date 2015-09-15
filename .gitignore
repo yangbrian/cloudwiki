@@ -1,1 +1,7 @@
 node_modules
+.idea
+*.iml
+.sass-cache
+
+# style.css should be compiled from style.scss
+style.css
