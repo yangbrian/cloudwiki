@@ -22,6 +22,7 @@ var parser = function(input, hostAddress) {
 	var counter = 0
 	var output = ""
 	var lines = input.split('\n')
+	var p = false
 
 	for(var index in lines) {
 
@@ -32,9 +33,10 @@ var parser = function(input, hostAddress) {
 		 */
 		
 		// parse p
-		if (line === '') {
-			output += '</ br>'
-			continue
+		if (line == '' || line == '\r') {
+			output += '</p></ br>';
+			p = false;
+			continue;
 		}
 		
 		// parse === head ===
@@ -59,9 +61,18 @@ var parser = function(input, hostAddress) {
 		}
 
 		// parse plain text
-		output += '<p>'+line+'</p>'
+		if (!p) {
+			output += '<p>';
+			p = true;
+		}
 
+		output += line;
+		
 	}
+
+	if (p)
+		output += '</p>';
+
 	return {'output' : output, 'status' : 'succeed', 'navlist':navlist}
 
 }
