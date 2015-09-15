@@ -129,7 +129,7 @@ var makeSectionHtml = function(navlist,liattr,ulattr,aattr,divattr) {
 var indentNav = function(list) {
 
 	if (!list.length)
-		return "li\n\t no entries" 
+		return "li  no entries" 
 
 	var output = "";
 	var indent = "";
