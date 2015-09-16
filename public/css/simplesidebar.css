@@ -18,8 +18,13 @@
     padding-left: 250px;
 }
 
+.navbar {
+    z-index: 1001;
+}
+
 #sidebar-wrapper {
     z-index: 1000;
+    top: 0;
     position: fixed;
     left: 250px;
     width: 0;
@@ -52,7 +57,7 @@
 
 .sidebar-nav {
     position: absolute;
-    top: 0;
+    top: 50px;
     width: 250px;
     margin: 0;
     padding: 0;
