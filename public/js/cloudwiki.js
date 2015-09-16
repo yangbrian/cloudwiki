@@ -2,6 +2,11 @@
 
 $(document).ready(function() {
 
+  $('#searchForm').on('submit', function(e) {
+    e.preventDefault();
+    window.location.href = '/' + $('#search').val().replace(/ /g, "_");
+  });
+
   $('#editArticle').on('click', function() {
     var title = $(this).attr('data-title');
     $(this).fadeOut();
