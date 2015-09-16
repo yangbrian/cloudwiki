@@ -17,8 +17,8 @@ block content
                     .col-lg-12
                         h1 #{title}
                         if error
-                            div.panel.panel-warning
-                                div.panel-heading Warning: #{title} does not exist yet.
+                            div.panel.panel-danger
+                                div.panel-heading Error: #{title} does not exist yet.
 
                         #article !{ body }
 
