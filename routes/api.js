@@ -39,11 +39,20 @@ router.get('/:title', function (req, res, next) {
  */
 router.post('/:title', function (req, res, next) {
 
+  // to deal with the form which doesn't have data
+  if (req.body.title) {
+    req.body.data = {};
+    req.body.data.title = req.body.title;
+    req.body.data.body = req.body.body;
+  } else {
+    req.body.data = JSON.parse(req.body.data);
+  }
+
   Article.update({
     title: req.params.title.replace(/_/g, " ")
   }, {
-    title: req.body.title || req.params.title.replace(/_/g, " "),
-    body: req.body.body,
+    title: req.body.data.title || req.params.title.replace(/_/g, " "),
+    body: req.body.data.body,
     time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
   }, function (err, number, raw) {
@@ -64,14 +73,14 @@ router.post('/:title', function (req, res, next) {
 
     if (!err && !number.n) {
 
-      if (req.params.title.replace(/_/g, " ") != req.body.title) {
+      if (req.params.title.replace(/_/g, " ") != req.body.data.title) {
           status.status = 'ERROR'
           return res.send(JSON.stringify(status))
       }
 
       var article = new Article({  
         title: req.params.title.replace(/_/g, " "),   
-        body: req.body.body, 
+        body: req.body.data.body, 
         time: moment().format('MMMM Do YYYY, h:mm:ss a')   
       });    
  
