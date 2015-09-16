@@ -49,8 +49,8 @@ var parser = function(input, hostAddress) {
 		}
 
 		// parse [[a|b]] or [[a]]
-		if (line.match(/\[\[([\w+\W]+\|)?([\w+\W]+)\]\]/g)) {
-			output += line.replace(/\[\[([\w+\W]+\|)?([\w+\W]+)\]\]/g, function(match, p1, p2, offset, string) {
+		if (line.match(/\[\[([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+\|)?([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+)\]\]/g)) {
+			output += line.replace(/\[\[([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+\|)?([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+)\]\]/g, function(match, p1, p2, offset, string) {
 				if (p1 !== undefined)
 					p1 = p1.substr(0, p1.length - 1);
 				else
