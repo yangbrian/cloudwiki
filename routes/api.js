@@ -25,8 +25,8 @@ router.get('/:title', function (req, res, next) {
     .lean().exec(function (err, article) {
       res.setHeader('content-type', 'application/json');
 
-      if (!article)
-        return res.send('null');
+      if (!article[0])
+        return res.send(JSON.stringify('null'));
 
       // Mongo returns an array, but we only want one
       var data = { "title" : article[0].title, "body" : article[0].body };
