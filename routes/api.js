@@ -45,7 +45,12 @@ router.post('/:title', function (req, res, next) {
     req.body.data.title = req.body.title;
     req.body.data.body = req.body.body;
   } else {
-    req.body.data = JSON.parse(req.body.data);
+    try {
+      req.body.data = JSON.parse(req.body.data);
+    } catch(err) {
+      res.setHeader('content-type', 'application/json');
+      return res.send('{ "status": "ERROR ' + err + '"}');
+    }
   }
 
   Article.update({
