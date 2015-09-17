@@ -40,6 +40,7 @@ router.get('/:title', function (req, res, next) {
  */
 router.post('/:title', function (req, res, next) {
 
+  console.log(req.body.data);
   // to deal with the form which doesn't have data
   if (req.body.title) {
     req.body.data = {};
