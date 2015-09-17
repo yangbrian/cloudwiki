@@ -64,7 +64,6 @@ router.post('/:title', function (req, res, next) {
     req.body.data = {};
     req.body.data.title = req.params.title.replace(/_/g, " ");
     req.body.data.body = null;
-    return res.send('{ "status": "ERROR"}');
   }
 
   Article.update({
