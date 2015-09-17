@@ -40,19 +40,26 @@ router.get('/:title', function (req, res, next) {
  */
 router.post('/:title', function (req, res, next) {
 
-  console.log(req.body);
+  console.log(req);
+
   // to deal with the form which doesn't have data
-  if (req.body.title) {
+
+  if (req.body.data) {
+    try {
+      req.body.data = parse(req.body.data);
+    } catch (err) {
+      res.setHeader('content-type', 'application/json');
+      return res.send('{ "status": "ERROR"}');
+    }
+  } else if (req.body.title) {
     req.body.data = {};
     req.body.data.title = req.body.title;
     req.body.data.body = req.body.body;
+
   } else {
-    try {
-      req.body.data = parse(req.body.data);
-    } catch(err) {
-      res.setHeader('content-type', 'application/json');
-      return res.send('{ "status": "ERROR1 ' + err + '"}');
-    }
+    req.body.data = {};
+    req.body.data.title = req.params.title.replace(/_/g, " ");
+    req.body.data.body = '';
   }
 
   Article.update({
