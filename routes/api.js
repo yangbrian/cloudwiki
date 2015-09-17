@@ -26,7 +26,8 @@ router.get('/:title', function (req, res, next) {
       res.setHeader('content-type', 'application/json');
 
       // Mongo returns an array, but we only want one
-      return res.send(JSON.stringify(article[0]));
+      var data = { "title" : article[0].title, "body" : article[0].body };
+      return res.send(JSON.stringify(data));
     });
 });
 
