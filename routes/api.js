@@ -63,7 +63,6 @@ router.post('/:title', function (req, res, next) {
   } else {
     req.body.data = {};
     req.body.data.title = req.params.title.replace(/_/g, " ");
-    return res.send('{ "status": "CREATED"}');
   }
 
   Article.update({
