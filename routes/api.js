@@ -10,6 +10,9 @@ var parse = require('loose-json');
 var mongoose = require('mongoose');
 var Article = mongoose.model('Article');
 
+var multer  = require('multer');
+var upload = multer();
+
 /**
  * Get article by name
  * /api/Article_Title returns a JSON object describing the requested article
@@ -42,7 +45,7 @@ router.get('/:title', function (req, res, next) {
  *
  * If the article does not exist, it will create it with the provided parameters in the post body.
  */
-router.post('/:title', function (req, res, next) {
+router.post('/:title', upload.array(), function (req, res, next) {
 
   console.log(req);
 
