@@ -5,6 +5,7 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment');
+var parse = require('loose-json');
 
 var mongoose = require('mongoose');
 var Article = mongoose.model('Article');
@@ -46,10 +47,10 @@ router.post('/:title', function (req, res, next) {
     req.body.data.body = req.body.body;
   } else {
     try {
-      req.body.data = JSON.parse(req.body.data);
+      req.body.data = parse(req.body.data);
     } catch(err) {
       res.setHeader('content-type', 'application/json');
-      return res.send('{ "status": "ERROR ' + err + '"}');
+      return res.send('{ "status": "ERROR1 ' + err + '"}');
     }
   }
 
