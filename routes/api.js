@@ -44,7 +44,7 @@ router.get('/:title', function (req, res, next) {
  */
 router.post('/:title', function (req, res, next) {
 
-  //console.log(req);
+  console.log(req);
 
   // to deal with the form which doesn't have data
 
@@ -64,6 +64,7 @@ router.post('/:title', function (req, res, next) {
     req.body.data = {};
     req.body.data.title = req.params.title.replace(/_/g, " ");
     req.body.data.body = null;
+    return res.send('{ "status": "ERROR"}');
   }
 
   Article.update({
