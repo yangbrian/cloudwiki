@@ -55,7 +55,9 @@ var parser = function(input, hostAddress) {
 					p1 = p1.substr(0, p1.length - 1);
 				else
 					p1 = p2;
-				return '<a href='+hostAddress+'/'+p1.trim().replace(/\s/g,'_')+'>'+ p2.trim() + '</a>';
+				return '<a href='+hostAddress+'/'+p1.trim().replace(/\s/g,'_').replace(/_(\w)|(^\w)/,function(t) {
+					return t.toUpperCase();	
+				})+'>'+ p2.trim() + '</a>';
 		 	});
 		 	continue
 		}
