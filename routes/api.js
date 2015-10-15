@@ -13,10 +13,6 @@ var Article = mongoose.model('Article');
 var multer  = require('multer');
 var upload = multer();
 
-String.prototype.uppercase = function(str) {
-  return str.charAt(0).toUpperCase() + string.slice(1);
-}
-
 /**
  * Get article by name
  * /api/Article_Title returns a JSON object describing the requested article
@@ -64,19 +60,19 @@ router.post('/:title', upload.array(), function (req, res, next) {
     }
   } else if (req.body.title) {
     req.body.data = {};
-    req.body.data.title = req.body.title.uppercase();
+    req.body.data.title = req.body.title.toUpperCase();
     req.body.data.body = req.body.body;
 
   } else {
     req.body.data = {};
-    req.body.data.title = req.params.title.replace(/_/g, " ").uppercase();
+    req.body.data.title = req.params.title.replace(/_/g, " ").toUpperCase();
     req.body.data.body = null;
   }
 
   Article.update({
     title: req.params.title.replace(/_/g, " ")
   }, {
-    title: req.body.data.title.uppercase() || req.params.title.replace(/_/g, " ").uppercase(),
+    title: req.body.data.title.toUpperCase() || req.params.title.replace(/_/g, " ").toUpperCase(),
     body: req.body.data.body,
     time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
@@ -99,13 +95,13 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
     if (!err && !number.n) {
 
-      if (req.params.title.replace(/_/g, " ").uppercase() != req.body.data.title.uppercase()) {
+      if (req.params.title.replace(/_/g, " ").toUpperCase() != req.body.data.title.toUpperCase()) {
           status.status = 'ERROR'
           return res.send(JSON.stringify(status))
       }
 
       var article = new Article({  
-        title: req.params.title.replace(/_/g, " ").uppercase(),   
+        title: req.params.title.replace(/_/g, " ").toUpperCase(),   
         body: req.body.data.body, 
         time: moment().format('MMMM Do YYYY, h:mm:ss a')   
       });    
