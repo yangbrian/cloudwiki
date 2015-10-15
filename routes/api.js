@@ -60,19 +60,19 @@ router.post('/:title', upload.array(), function (req, res, next) {
     }
   } else if (req.body.title) {
     req.body.data = {};
-    req.body.data.title = req.body.title;
+    req.body.data.title = req.body.title.toUpperCase();
     req.body.data.body = req.body.body;
 
   } else {
     req.body.data = {};
-    req.body.data.title = req.params.title.replace(/_/g, " ");
+    req.body.data.title = req.params.title.replace(/_/g, " ").toUpperCase();
     req.body.data.body = null;
   }
 
   Article.update({
     title: req.params.title.replace(/_/g, " ")
   }, {
-    title: req.body.data.title || req.params.title.replace(/_/g, " "),
+    title: req.body.data.title.toUpperCase() || req.params.title.replace(/_/g, " ").toUpperCase(),
     body: req.body.data.body,
     time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
@@ -95,13 +95,13 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
     if (!err && !number.n) {
 
-      if (req.params.title.replace(/_/g, " ") != req.body.data.title) {
+      if (req.params.title.replace(/_/g, " ").toUpperCase() != req.body.data.title.toUpperCase()) {
           status.status = 'ERROR'
           return res.send(JSON.stringify(status))
       }
 
       var article = new Article({  
-        title: req.params.title.replace(/_/g, " "),   
+        title: req.params.title.replace(/_/g, " ").toUpperCase(),   
         body: req.body.data.body, 
         time: moment().format('MMMM Do YYYY, h:mm:ss a')   
       });    
