@@ -78,6 +78,7 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
   }, function (err, number, raw) {
 
+    console.log(req.body.data.body);
     var status = {
       status: 'null'
     };

@@ -3,10 +3,11 @@ var makeHtml = require('../helpers/wikiParser').makeHtml
 var makeNavList = require('../helpers/wikiParser').makeNavList
 var jade = require('jade');
 var router = express.Router();
+var os = require("os");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express', host: os.hostname() });
 });
 
 var mongoose = require('mongoose');
@@ -36,7 +37,8 @@ router.get('/:title', function(req, res) {
         title: article.title,
         body: content['output'],
         articleNav: jade.render(makeNavList(content['navlist'])),
-        timestamp: article.time
+        timestamp: article.time,
+        host: os.hostname()
       });
     });
 });
@@ -61,7 +63,8 @@ router.get('/:title/edit', function(req, res) {
       res.render('edit', {
         urlTitle: req.params.title,
         title: article.title,
-        body: article.body
+        body: article.body,
+        host: os.hostname()
       });
     });
 });
