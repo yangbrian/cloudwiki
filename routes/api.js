@@ -64,12 +64,12 @@ router.post('/:title', upload.array(), function (req, res, next) {
     }
   } else if (req.body.title) {
     req.body.data = {};
-    req.body.data.title = toUpperCase(req.body.title);
+    req.body.data.title = req.body.title;
     req.body.data.body = req.body.body;
 
   } else {
     req.body.data = {};
-    req.body.data.title = toUpperCase(req.params.title.replace(/_/g, " "));
+    req.body.data.title = req.params.title.replace(/_/g, " ");
     req.body.data.body = null;
   }
 
@@ -82,7 +82,6 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
   }, function (err, number, raw) {
 
-    console.log(req.body.data.body);
     var status = {
       status: 'null'
     };
@@ -99,7 +98,7 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
     if (!err && !number.n) {
 
-      if (req.params.title.replace(/_/g, " ") != req.body.data.title) {
+      if (toUpperCase(req.params.title.replace(/_/g, " ")) != toUpperCase(req.body.data.title) {
           status.status = 'ERROR'
           return res.send(JSON.stringify(status))
       }
