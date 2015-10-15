@@ -13,11 +13,15 @@ router.get('/', function(req, res, next) {
 var mongoose = require('mongoose');
 var Article = mongoose.model('Article');
 
+function toUpperCase(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 /* GET article */
 router.get('/:title', function(req, res) {
   Article
     .find({
-      title: req.params.title.replace(/_/g, " ")
+      title: toUpperCase(req.params.title.replace(/_/g, " "))
     })
     .lean().exec(function (err, content) {
       var article = content[0];
@@ -25,7 +29,7 @@ router.get('/:title', function(req, res) {
       if (!article || err)
         return res.render('article', {
           urlTitle: req.params.title,
-          title: req.params.title.replace(/_/g, " "),
+          title: toUpperCase(req.params.title.replace(/_/g, " ")),
           error: true
         });
 
@@ -44,9 +48,10 @@ router.get('/:title', function(req, res) {
 });
 
 router.get('/:title/edit', function(req, res) {
+
   Article
     .find({
-      title: req.params.title.replace(/_/g, " ")
+      title: toUpperCase(req.params.title.replace(/_/g, " "))
     })
     .lean().exec(function (err, content) {
       var article = content[0];
@@ -54,7 +59,7 @@ router.get('/:title/edit', function(req, res) {
       if (!article || err)
         return res.render('edit', {
           urlTitle: req.params.title,
-          title: req.params.title.replace(/_/g, " "),
+          title: toUpperCase(req.params.title.replace(/_/g, " ")),
           body: '',
           error: true
         });
