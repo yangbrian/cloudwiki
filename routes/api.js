@@ -14,7 +14,7 @@ var multer  = require('multer');
 var upload = multer();
 
 String.prototype.uppercase = function(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + string.slice(1);
 }
 
 /**
