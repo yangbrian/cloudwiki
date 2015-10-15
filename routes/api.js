@@ -98,7 +98,7 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
     if (!err && !number.n) {
 
-      if (toUpperCase(req.params.title.replace(/_/g, " ")) != toUpperCase(req.body.data.title) {
+      if (toUpperCase(req.params.title.replace(/_/g, " ")) != toUpperCase(req.body.data.title)) {
           status.status = 'ERROR'
           return res.send(JSON.stringify(status))
       }
