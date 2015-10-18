@@ -1,0 +1,45 @@
+extends layout
+block content
+
+  #wrapper
+      // Sidebar
+      #sidebar-wrapper
+          ul.sidebar-nav
+              li.sidebar-brand
+                  a(href='#')
+                      | Start Here
+              li
+                  a(href='#') Most Popular
+              li
+                  a(href='#') Recently Added
+
+      // /#sidebar-wrapper
+      // Page Content
+      #page-content-wrapper
+          .container-fluid
+              .row
+                  .col-lg-12
+                      h1 CloudWiki
+                      h2 Search Articles
+
+                      p Type in an article name below or try going to <a href='/New_York_City'>New York City</a> or <a href='Stony_Brook_University'>Stony Brook University</a>.
+
+                      form#searchForm
+                          input#search.form-control(type='text')
+                          br
+                          input#searchButton.btn.btn-primary(type='submit', value='Search')
+
+
+
+      // /#page-content-wrapper
+  // /#wrapper
+  // jQuery
+  script(src='js/jquery.js')
+  // Bootstrap Core JavaScript
+  script(src='js/bootstrap.min.js')
+  // Menu Toggle Script
+  script.
+      $("#menu-toggle").click(function (e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("toggled");
+      });
