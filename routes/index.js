@@ -7,7 +7,7 @@ var os = require("os");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', host: os.hostname() });
+  res.render('index', { title: 'CloudWiki', host: os.hostname() });
 });
 
 var mongoose = require('mongoose');
@@ -19,6 +19,12 @@ function toUpperCase(str) {
 
 /* GET article */
 router.get('/:title', function(req, res) {
+
+  // redirect lower case to upper case
+  if (req.params.title[0] !== req.params.title[0].toUpperCase()) {
+    return res.redirect(301, '/' + toUpperCase(req.params.title));
+  }
+
   Article
     .find({
       title: toUpperCase(req.params.title.replace(/_/g, " "))
