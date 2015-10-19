@@ -47,6 +47,10 @@ router.get('/:title', function (req, res, next) {
  */
 router.post('/:title', upload.array(), function (req, res, next) {
 
+  function toUpperCase(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   console.log(req);
 
   // to deal with the form which doesn't have data
@@ -70,9 +74,9 @@ router.post('/:title', upload.array(), function (req, res, next) {
   }
 
   Article.update({
-    title: req.params.title.replace(/_/g, " ")
+    title: toUpperCase(req.params.title.replace(/_/g, " "))
   }, {
-    title: req.body.data.title || req.params.title.replace(/_/g, " "),
+    title: toUpperCase(req.body.data.title) || toUpperCase(req.params.title.replace(/_/g, " ")),
     body: req.body.data.body,
     time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
@@ -94,13 +98,13 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
     if (!err && !number.n) {
 
-      if (req.params.title.replace(/_/g, " ") != req.body.data.title) {
+      if (toUpperCase(req.params.title.replace(/_/g, " ")) != toUpperCase(req.body.data.title)) {
           status.status = 'ERROR'
           return res.send(JSON.stringify(status))
       }
 
       var article = new Article({  
-        title: req.params.title.replace(/_/g, " "),   
+        title: toUpperCase(req.params.title.replace(/_/g, " ")),   
         body: req.body.data.body, 
         time: moment().format('MMMM Do YYYY, h:mm:ss a')   
       });    
