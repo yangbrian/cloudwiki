@@ -8,5 +8,5 @@
           command: forever start /home/cloudwiki/bin/www
 
         # added bellow task to reboot node service
-        - name: restart node server
-          service: name=cloudwiki enabled=yes state=restarted
+       # - name: restart node server
+       #   service: name=cloudwiki enabled=yes state=restarted
