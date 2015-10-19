@@ -31,6 +31,10 @@ router.get('/:title', function (req, res, next) {
       if (!article[0])
         return res.send(JSON.stringify('null'));
 
+      if (article[0].redirect) {
+        return res.redirect(301, '' + article[0].redirect);
+      }
+
       // Mongo returns an array, but we only want one
       var data = { "title" : article[0].title, "body" : article[0].body };
       return res.send(JSON.stringify(data));
@@ -73,60 +77,97 @@ router.post('/:title', upload.array(), function (req, res, next) {
     req.body.data.body = null;
   }
 
-  Article.update({
-    title: toUpperCase(req.params.title.replace(/_/g, " "))
-  }, {
-    title: toUpperCase(req.body.data.title) || toUpperCase(req.params.title.replace(/_/g, " ")),
-    body: req.body.data.body,
-    time: moment().format('MMMM Do YYYY, h:mm:ss a')
+  // check if article already exists
+  Article
+    .find({
+      title: req.params.title.replace(/_/g, " ")
+    })
+    .lean().exec(function (err, article) {
+      res.setHeader('content-type', 'application/json');
 
-  }, function (err, number, raw) {
 
-    var status = {
-      status: 'null'
-    };
+      var status = {
+        status: 'null'
+      };
 
-    res.setHeader('content-type', 'application/json');
-
-    if (err) {
-      console.log("\nError updating article");
-      status.status = 'ERROR-UPDATE';
-    } else {
-      console.log("\nUpdated article - " + req.params.title);
-      status.status = 'UPDATED';
-    }
-
-    if (!err && !number.n) {
-
-      if (toUpperCase(req.params.title.replace(/_/g, " ")) != toUpperCase(req.body.data.title)) {
+      // check if article already exists
+      if (!article[0]) {
+        if (toUpperCase(req.params.title.replace(/_/g, " ")) != toUpperCase(req.body.data.title)) {
           status.status = 'ERROR'
           return res.send(JSON.stringify(status))
-      }
-
-      var article = new Article({  
-        title: toUpperCase(req.params.title.replace(/_/g, " ")),   
-        body: req.body.data.body, 
-        time: moment().format('MMMM Do YYYY, h:mm:ss a')   
-      });    
- 
-      article.save(function (err) {    
-        if (err) {   
-          console.log("\nError creating new article");   
-          status.status = 'ERROR-CREATE';    
-        } else {   
-          console.log("\nNew article - " + req.params.title + " created");   
-          status.status = 'CREATED';   
         }
 
+        var article = new Article({
+          title: toUpperCase(req.params.title.replace(/_/g, " ")),
+          body: req.body.data.body,
+          time: moment().format('MMMM Do YYYY, h:mm:ss a')
+        });
 
-        return res.send(JSON.stringify(status));
-      });
+        article.save(function (err) {
+          if (err) {
+            console.log("\nError creating new article");
+            status.status = 'ERROR-CREATE';
+          } else {
+            console.log("\nNew article - " + req.params.title + " created");
+            status.status = 'CREATED';
+          }
 
-  } else {
-      return res.send(JSON.stringify(status));
-    }
 
-  });
+          return res.send(JSON.stringify(status));
+        });
+      } else {
+
+        var paramTitle = req.params.title.replace(/_/g, " ");
+        var titleUpdated = false;
+        if (req.body.data.title && req.body.data.title !== paramTitle)
+          titleUpdated = paramTitle;
+
+
+        Article.update({
+          title: toUpperCase(paramTitle)
+        }, {
+          title: toUpperCase(req.body.data.title) || toUpperCase(paramTitle),
+          body: req.body.data.body,
+          time: moment().format('MMMM Do YYYY, h:mm:ss a')
+
+        }, function (err, number, raw) {
+
+          var status = {
+            status: 'null'
+          };
+
+          res.setHeader('content-type', 'application/json');
+
+          if (err) {
+            console.log("\nError updating article");
+            status.status = 'ERROR-UPDATE';
+          } else {
+            console.log("\nUpdated article - " + req.params.title);
+            status.status = 'UPDATED';
+
+
+            if (titleUpdated) {
+              var article = new Article({
+                title: paramTitle,
+                redirect: req.body.data.title
+              });
+
+              article.save(function (err) {
+                if (err) {
+                  console.log("\nError creating redirect for " + paramTitle + " to " + req.body.data.title);
+                } else {
+                  console.log("\nCreated redirect for " + paramTitle + " to " + req.body.data.title);
+                }
+              });
+            }
+          }
+
+          return res.send(JSON.stringify(status));
+
+
+        });
+      }
+    });
 
 });
 

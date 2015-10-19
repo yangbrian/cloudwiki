@@ -11,7 +11,8 @@ mongoose.connect('mongodb://10.0.0.12/?rs0=cloudwiki');
 var Article = mongoose.model('Article', {
   title: String,
   body: String,
-  time: String
+  time: String,
+  redirect: String
 });
 
 

@@ -39,9 +39,12 @@ router.get('/:title', function(req, res) {
           error: true
         });
 
+      if (article.redirect) {
+        return res.redirect(301, '/' + article.redirect);
+      }
+
       var content = makeHtml(article.body || '','');
 
-      console.log(article.body);
       res.render('article', {
         urlTitle: req.params.title,
         title: article.title,
