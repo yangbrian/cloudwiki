@@ -1,0 +1,139 @@
+---
+  - hosts: mongodb
+    remote_user: root
+    vars: 
+      state: restart 
+      dbdir: /data/db
+    tasks:
+
+      - name: make db directory
+        file:
+        args:
+          path: "{{dbdir}}"
+          state: directory
+          owner: root
+          group: root
+        when: state|match("new")
+
+      - name: change db directory
+        lineinfile: 
+        args:
+          dest: /etc/mongodb.conf
+          state: present
+          regexp: "dbpath=.+"
+          line: dbpath={{dbdir}}
+        when: state|match("new")
+
+      - name: change bind_ip
+        lineinfile: 
+        args:
+          dest: /etc/mongodb.conf
+          state: present
+          regexp: "bind_ip.+"
+          line: bind_ip = 0.0.0.0
+        when: state|match("new")
+
+      - name: make db reboot when process died
+        copy: src=/root/config/mongodb/init/mongodb.conf dest=/etc/init/mongodb.conf mode=0644 group=root owner=root
+        when: state|match("new")
+
+  - hosts: db_configsvr
+    remote_user: root
+    vars:
+      state: none
+    tasks:
+      
+      - name: change start mode to configsvr
+        lineinfile:
+        args:
+          dest: /etc/mongodb.conf
+          state: present
+          regexp: "configsvr=.+"
+          line: configsvr=true
+        when: state|match("new")
+
+      - name: start configsvr
+        service: 
+        args:
+          name: mongodb
+          state: started
+          enabled: yes
+        when: state|match("new")
+
+      - name: restart configsvr
+        service:
+        args:
+          name: mongodb
+          state: restarted
+          enabled: yes
+        when: state|match("restart")
+
+      - name: waiting complete init
+        shell: curl 127.0.0.1:28019
+        retries: 10
+        delay: 30
+
+  - hosts: db_routers
+    remote_user: root
+    vars:
+      state: restart
+    tasks:
+      
+      - name: make mongos conf files
+        copy: src=/root/config/mongodb/mongos.conf dest=/etc/mongos.conf mode=0644 owner=root group=root
+        when: state|match("new")
+
+      - name: set mongos as upstart program
+        copy: src=/root/config/mongodb/init/mongos.conf dest=/etc/init/mongos.conf mode=0644 owner=root group=root
+        when: state|match("new")
+
+      - name: let routers know its config servers
+        lineinfile:
+        args:
+          dest: /etc/mongos.conf
+          state: present
+          regexp: "configdb=.+"
+          line: "configdb={{configsvr0}},{{configsvr1}},{{configsvr2}}"
+        when: state|match("new")
+
+      - name: run mongos router
+        service:
+        args:
+          name: mongos
+          enabled: yes
+          state: started
+        when: state|match("new")
+
+      - name: reboot router
+        service:
+        args:
+          name: mongos
+          enabled: yes
+          state: restarted
+        when: state|match("restart")
+
+  - hosts: dbs
+    remote_user: root
+    vars:
+      state : restart 
+      setname: rs0
+      rs: true
+    tasks:
+
+      - name: put config file to the end of /etc/mongodb.conf
+        lineinfile: 
+        args:
+          dest: /etc/mongodb.conf
+          state: present
+          regexp: "replSet=.+"
+          line: replSet={{setname}}
+        when: state|match("new") and rs
+        
+      - name: restart mongodb service
+        service: 
+        args:
+          name: mongodb
+          state: restarted
+          enabled: yes
+
+
