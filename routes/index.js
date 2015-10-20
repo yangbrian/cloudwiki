@@ -33,7 +33,7 @@ router.get('/:title', function(req, res) {
     .lean().exec(function (err, content) {
       
 
-      if (!content || err)
+      if (!content || content.length === 0 || err)
         return res.render('article', {
           urlTitle: req.params.title,
           title: toUpperCase(req.params.title.replace(/_/g, " ")),
@@ -42,13 +42,13 @@ router.get('/:title', function(req, res) {
 
       var article = content[0];
 
-      if (article.body.indexOf('#REDIRECT') === 0 && !req.query.noredirect) {
+      if (article.body && article.body.indexOf('#REDIRECT') === 0 && !req.query.noredirect) {
         // return res.redirect(301, '/' + article.redirect.replace(/ /g, "_"));
         return res.redirect(301, '/' + parseRedirect(article.body) + '?src=' + req.params.title);
       }
 
       if (req.query.src) {
-        article.body = '<p id="redirect">Redirected from [[' + req.query.src + ']]</p>' + article.body;
+        article.body = '<p id="redirect">Redirected from [[' + req.query.src.replace(/_/g, " ") + ']]</p>' + article.body;
       }
 
       var content = makeHtml(article.body || '','');
@@ -73,7 +73,7 @@ router.get('/:title/edit', function(req, res) {
     .lean().exec(function (err, content) {
       var article = content[0];
 
-      if (!article || err)
+      if (content.length === 0 || !article || err)
         return res.render('edit', {
           urlTitle: req.params.title,
           title: toUpperCase(req.params.title.replace(/_/g, " ")),

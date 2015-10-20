@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://10.0.0.12/?rs0=cloudwiki');
-//mongoose.connect('mongodb://127.0.0.1:27017/cloudwiki');
+// mongoose.connect('mongodb://127.0.0.1:27017/cloudwiki');
 
 var Article = mongoose.model('Article', {
   title: String,
@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api', api);
-app.use('/grade/:title',function(req, res, next){
+app.use('/grading/:title',function(req, res, next){
 	res.redirect(301, "/"+req.params.title);	
 });
 

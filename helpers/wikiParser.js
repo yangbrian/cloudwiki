@@ -167,8 +167,8 @@ var indentNav = function(list) {
 }
 
 var parseRedirect = function(line) {
-	var redirect = line.replace(/#REDIRECT \[\[([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+)\]\]/, function(match, p1, offset, string) {
-			
+	var redirect = line.replace(/#REDIRECT \[\[([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+)\]\]/, 
+		function(match, p1, offset, string) {
 			return p1.trim();
 	 	});
 	return redirect.replace(/ /g, '_');
