@@ -1,0 +1,40 @@
+extends layout
+block content
+    #wrapper
+        // Sidebar
+        #sidebar-wrapper
+            ul.sidebar-nav
+                li.sidebar-brand
+                    a(href='#')
+                        | Start Here
+                div !{articleNav}
+                
+        // /#sidebar-wrapper
+        // Page Content
+        #page-content-wrapper
+            .container-fluid
+                .row
+                    .col-lg-12
+                        h1 Search Results: #{term}
+                        if error
+                            div.panel.panel-danger
+                                div.panel-heading Error: #{title} does not exist yet.
+
+                        #matchTitle !{match}
+
+                        #results
+
+                        #serverInfo Served from #{ host }
+                        
+        // /#page-content-wrapper
+    // /#wrapper
+    // jQuery
+    script(src='js/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='js/bootstrap.min.js')
+    // Menu Toggle Script
+    script.
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });

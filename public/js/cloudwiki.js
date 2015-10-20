@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   $('#searchForm').on('submit', function(e) {
     e.preventDefault();
-    window.location.href = '/' + $('#search').val().replace(/ /g, "_");
+    window.location.href = '/search/' + $('#search').val();
   });
 
   $('#editArticle').on('click', function() {

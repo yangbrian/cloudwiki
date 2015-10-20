@@ -92,4 +92,16 @@ router.get('/:title/edit', function(req, res) {
     });
 });
 
+router.get('/search/:search', function(req, res) {
+
+  console.log(makeHtml('[[' + req.params.search + ']]'), '');
+  res.render('search', {
+    title: 'Search Results ' + req.params.search,
+    term: req.params.search,
+    match: makeHtml('<h2> Exact Title: [[' + req.params.search + ']]</h2>', '')['output'],
+    host: os.hostname()
+  });
+
+});
+
 module.exports = router;
