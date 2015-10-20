@@ -166,5 +166,16 @@ var indentNav = function(list) {
 	return output;
 }
 
+var parseRedirect = function(line) {
+	var redirect = line.replace(/#REDIRECT \[\[([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+)\]\]/, function(match, p1, offset, string) {
+			
+
+			console.log("PARSE: " + p1.trim());
+			return p1.trim();
+	 	});
+	return redirect.replace(/ /g, '_');
+}
+
 module.exports.makeHtml = parser;
 module.exports.makeNavList = indentNav;
+module.exports.parseRedirect = parseRedirect;

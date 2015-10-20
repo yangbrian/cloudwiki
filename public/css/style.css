@@ -10,6 +10,11 @@ a {
   margin: 10px 0;
 }
 
+#redirect {
+	font-size: 0.95em;
+	font-style: italic;
+}
+
 @media (min-width: 768px) {
   .navbar-collapse.collapse {
     margin-bottom: 0;

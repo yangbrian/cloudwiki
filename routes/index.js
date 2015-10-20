@@ -1,6 +1,7 @@
 var express = require('express');
-var makeHtml = require('../helpers/wikiParser').makeHtml
-var makeNavList = require('../helpers/wikiParser').makeNavList
+var makeHtml = require('../helpers/wikiParser').makeHtml;
+var makeNavList = require('../helpers/wikiParser').makeNavList;
+var parseRedirect = require('../helpers/wikiParser').parseRedirect;
 var jade = require('jade');
 var router = express.Router();
 var os = require("os");
@@ -39,8 +40,13 @@ router.get('/:title', function(req, res) {
           error: true
         });
 
-      if (article.redirect) {
-        return res.redirect(301, '/' + article.redirect);
+      if (article.body.indexOf('#REDIRECT') === 0 && !req.query.noredirect) {
+        // return res.redirect(301, '/' + article.redirect.replace(/ /g, "_"));
+        return res.redirect(301, '/' + parseRedirect(article.body) + '?src=' + req.params.title);
+      }
+
+      if (req.query.src) {
+        article.body = '<p id="redirect">Redirected from [[' + req.query.src + ']]</p>' + article.body;
       }
 
       var content = makeHtml(article.body || '','');

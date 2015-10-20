@@ -55,8 +55,6 @@ router.post('/:title', upload.array(), function (req, res, next) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  console.log(req);
-
   // to deal with the form which doesn't have data
 
   if (req.body.data) {
@@ -149,7 +147,7 @@ router.post('/:title', upload.array(), function (req, res, next) {
             if (titleUpdated) {
               var article = new Article({
                 title: paramTitle,
-                redirect: req.body.data.title
+                body: '#REDIRECT [[' + req.body.data.title + ']]'
               });
 
               article.save(function (err) {

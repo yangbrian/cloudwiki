@@ -33,6 +33,9 @@ $(document).ready(function() {
       }); // end submit
     }); // end get edit form
   }); // end button click
+
+  var redirect = $('#redirect').find('a');
+  redirect.attr('href', redirect.attr('href') + '?noredirect=true');
 }); // jquery document ready
 
 // ^ I'm so sorry... this will be cleaned up later.
