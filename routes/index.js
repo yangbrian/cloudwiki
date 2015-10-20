@@ -31,14 +31,16 @@ router.get('/:title', function(req, res) {
       title: toUpperCase(req.params.title.replace(/_/g, " "))
     })
     .lean().exec(function (err, content) {
-      var article = content[0];
+      
 
-      if (!article || err)
+      if (!content || err)
         return res.render('article', {
           urlTitle: req.params.title,
           title: toUpperCase(req.params.title.replace(/_/g, " ")),
           error: true
         });
+
+      var article = content[0];
 
       if (article.body.indexOf('#REDIRECT') === 0 && !req.query.noredirect) {
         // return res.redirect(301, '/' + article.redirect.replace(/ /g, "_"));
