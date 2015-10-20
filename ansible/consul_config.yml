@@ -46,6 +46,14 @@
       - name: copy config file to consul.d directory
         copy: src=/root/config/consul/client.json dest=/etc/consul.d/config.json mode=0644 group=root owner=root
 
+      - name: reset rejoin host ips
+        lineinfile: 
+        args: 
+          dest: /etc/consul.d/config.json 
+          state: present
+          regexp: "\"retry_join\".+"
+          line: "\"retry_join\" : [\"{{consul_primary_server}}\", \"{{consul_primary_client}}\"]"
+
       - name: create directory for web ui
         file: path=/root/consul-ui/ state=directory owner=root group=root 
 
