@@ -144,7 +144,8 @@ router.post('/:title', upload.array(), function (req, res, next) {
             if (titleUpdated) {
               var article = new Article({
                 title: paramTitle,
-                body: '#REDIRECT [[' + req.body.data.title + ']]'
+                body: '#REDIRECT [[' + req.body.data.title + ']]',
+                time: moment().format('MMMM Do YYYY, h:mm:ss a')
               });
 
               article.save(function (err) {
