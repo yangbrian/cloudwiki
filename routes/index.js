@@ -71,9 +71,9 @@ router.get('/:title/edit', function(req, res) {
       title: toUpperCase(req.params.title.replace(/_/g, " "))
     })
     .lean().exec(function (err, content) {
-      var article = content[0];
+      
 
-      if (content.length === 0 || !article || err)
+      if (content.length === 0 || !content[0] || err)
         return res.render('edit', {
           urlTitle: req.params.title,
           title: toUpperCase(req.params.title.replace(/_/g, " ")),
@@ -81,6 +81,7 @@ router.get('/:title/edit', function(req, res) {
           error: true
         });
 
+      var article = content[0];
 
       res.render('edit', {
         urlTitle: req.params.title,
