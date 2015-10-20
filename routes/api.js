@@ -99,6 +99,7 @@ router.post('/:title', upload.array(), function (req, res, next) {
 
         article.save(function (err) {
           if (err) {
+            console.log(err);
             console.log("\nError creating new article");
             status.status = 'ERROR-CREATE';
           } else {
