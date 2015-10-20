@@ -31,10 +31,6 @@ router.get('/:title', function (req, res, next) {
       if (!article[0])
         return res.send(JSON.stringify('null'));
 
-      if (article[0].redirect) {
-        return res.redirect(301, '' + article[0].redirect);
-      }
-
       // Mongo returns an array, but we only want one
       var data = { "title" : article[0].title, "body" : article[0].body };
       return res.send(JSON.stringify(data));
