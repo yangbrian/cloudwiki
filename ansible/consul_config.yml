@@ -70,7 +70,54 @@
         file: path=/root/consul-ui/*.zip state=absent
         when: ui_exists|failed
 
+  - hosts: db_configsvr
+    remote_user: root
+    tasks:
+      - name: copy service file to consul.d
+        copy: 
+        args:
+          src: /root/config/consul/services/mongod_configsvr_services.json
+          dest: /etc/consul.d/mongod_configsvr_services.json
+          mode: 0644
+          owner: root
+          group: root
   
+  - hosts: dbs
+    remote_user: root
+    tasks:
+      - name: copy service of dbs file to consul.d
+        copy: 
+        args:
+          src: /root/config/consul/services/mongodb_services.json
+          dest: /etc/consul.d/mongodb_services.json
+          mode: 0644
+          owner: root
+          group: root
+
+  - hosts: db_routers
+    remote_user: root
+    tasks:
+      - name: copy service file of routers to consul.d
+        copy: 
+        args:
+          src: /root/config/consul/services/mongos_services.json
+          dest: /etc/consul.d/mongos_services.json
+          mode: 0644
+          owner: root
+          group: root
+
+  - hosts: web
+    remote_user: root
+    tasks:
+      - name: copy service file of web servers to consul.d
+        copy: 
+        args:
+          src: /root/config/consul/services/nodeservices.json
+          dest: /etc/consul.d/nodeservices.json
+          mode: 0644
+          owner: root
+          group: root
+          
   - hosts: consul
     remote_user: root
     tasks:
@@ -80,8 +127,9 @@
         register: runnable
 
       - name: test if consul is running
-        service: name=consul pattern=consul enabled=yes
+        shell: consul info 
         register: running
+        ignore_errors: yes
 
       - name: stop current running consul
         shell: consul leave
