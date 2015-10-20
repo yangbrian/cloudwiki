@@ -55,7 +55,7 @@ var parser = function(input, hostAddress) {
 					p1 = p1.substr(0, p1.length - 1);
 				else
 					p1 = p2;
-				return '<a href='+hostAddress+'/'+p1.trim().replace(/\s/g,'_').replace(/_(\w)|(^\w)/g,function(t) {
+				return '<a href='+hostAddress+'/'+p1.trim().replace(/\s/g,'_').replace(/(^\w)/g,function(t) {
 					return t.toUpperCase();	
 				})+'>'+ p2.trim() + '</a>';
 		 	});
@@ -169,8 +169,6 @@ var indentNav = function(list) {
 var parseRedirect = function(line) {
 	var redirect = line.replace(/#REDIRECT \[\[([\+\=\<\>\/\?\:\,\(\)\.\-\@\!\%\^\*\&\w+\s#?]+)\]\]/, function(match, p1, offset, string) {
 			
-
-			console.log("PARSE: " + p1.trim());
 			return p1.trim();
 	 	});
 	return redirect.replace(/ /g, '_');

@@ -40,6 +40,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api', api);
+app.use('/grade/:title',function(req, res, next){
+	res.redirect(301, "/"+req.params.title);	
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
