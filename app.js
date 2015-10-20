@@ -6,7 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://10.0.0.12/?rs0=cloudwiki');
+mongoose.connect('mongodb://10.0.0.12:27017,10.0.0.13:27017,10.0.0.14:27017/cloudwiki',{ mongos : true}, function(err) {
+  if (!err)
+    console.log(err);
+});
+
 // mongoose.connect('mongodb://127.0.0.1:27017/cloudwiki');
 
 var Article = mongoose.model('Article', {
@@ -41,7 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/api', api);
 app.use('/grading/:title',function(req, res, next){
-	res.redirect(301, "/"+req.params.title);	
+  res.redirect(301, "/"+req.params.title);  
 });
 
 // catch 404 and forward to error handler
