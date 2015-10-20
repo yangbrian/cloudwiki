@@ -6,8 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-// mongoose.connect('mongodb://10.0.0.12/?rs0=cloudwiki');
-mongoose.connect('mongodb://127.0.0.1:27017/cloudwiki');
+mongoose.connect('mongodb://10.0.0.12/?rs0=cloudwiki');
+// mongoose.connect('mongodb://127.0.0.1:27017/cloudwiki');
 
 var Article = mongoose.model('Article', {
   title: String,
