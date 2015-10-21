@@ -121,7 +121,7 @@ router.post('/:title', upload.array(), function (req, res, next) {
         Article.update({
           title: toUpperCase(paramTitle)
         }, {
-          title: toUpperCase(req.body.data.title) || toUpperCase(paramTitle),
+          //title: toUpperCase(req.body.data.title) || toUpperCase(paramTitle),
           body: req.body.data.body,
           time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
