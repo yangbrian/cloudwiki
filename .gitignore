@@ -3,3 +3,4 @@ node_modules
 *.iml
 .sass-cache
 .DS_Store
+*.log
