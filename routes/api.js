@@ -173,7 +173,7 @@ router.post('/:title', upload.array(), function (req, res, next) {
               status.status = "UPDATED";
             }
 
-            return res.send(JSON.stringify(status.status));
+            return res.send(JSON.stringify(status));
           });
         }
 
