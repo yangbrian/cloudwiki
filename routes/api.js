@@ -118,50 +118,109 @@ router.post('/:title', upload.array(), function (req, res, next) {
           titleUpdated = paramTitle;
 
 
-        Article.update({
-          title: toUpperCase(paramTitle)
-        }, {
-          //title: toUpperCase(req.body.data.title) || toUpperCase(paramTitle),
-          body: req.body.data.body,
-          time: moment().format('MMMM Do YYYY, h:mm:ss a')
+        res.setHeader('content-type', 'application/json');
+        // if title changed
+        if (titleUpdated) {
+          Article.update({
+            title: toUpperCase(paramTitle)
+          }, {
 
-        }, function (err, number, raw) {
+            body: '#REDIRECT [[' + req.body.data.title + ']]',
+            time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
-          var status = {
-            status: 'null'
-          };
+          }, function (err, number, raw) {
+            if (err) {
+              console.log("\nError creating redirect");
+              status.status = 'ERROR-REDIRECT';
+              return res.send(JSON.stringify(status));
+            } else {
+              console.log("\nRedirected article = " + req.params.title);
 
-          res.setHeader('content-type', 'application/json');
-
-          if (err) {
-            console.log("\nError updating article");
-            status.status = 'ERROR-UPDATE';
-          } else {
-            console.log("\nUpdated article - " + req.params.title);
-            status.status = 'UPDATED';
-
-
-            if (titleUpdated) {
               var article = new Article({
-                title: paramTitle,
-                body: '#REDIRECT [[' + req.body.data.title + ']]',
+                title: req.body.data.title,
+                body: req.body.data.body,
                 time: moment().format('MMMM Do YYYY, h:mm:ss a')
               });
 
               article.save(function (err) {
                 if (err) {
-                  console.log("\nError creating redirect for " + paramTitle + " to " + req.body.data.title);
+                  console.log("\nError creating redirected for " + paramTitle + " to " + req.body.data.title);
+                  status.status = 'ERROR-RENAME';
                 } else {
-                  console.log("\nCreated redirect for " + paramTitle + " to " + req.body.data.title);
+                  console.log("\nCreated redirected article for " + paramTitle + " to " + req.body.data.title);
+                  status.status = 'UPDATED';
                 }
+
+                return res.send(JSON.stringify(status));
               });
             }
-          }
 
-          return res.send(JSON.stringify(status));
+          });
+        } else {
+          Article.update({
+            title: toUpperCase(paramTitle)
+          }, {
+            //title: toUpperCase(req.body.data.title) || toUpperCase(paramTitle),
+            body: req.body.data.body,
+            time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
+          }, function (err, number, raw) {
+            if (err) {
+              console.log("\nError updating article");
+              status.status = 'ERROR-UPDATE';
+            } else {
+              console.log("\nUpdated article = " + req.params.title);
+              status.status = "UPDATED";
+            }
 
-        });
+            return res.send(JSON.stringify(status));
+          });
+        }
+
+        //Article.update({
+        //  title: toUpperCase(paramTitle)
+        //}, {
+        //  //title: toUpperCase(req.body.data.title) || toUpperCase(paramTitle),
+        //  body: req.body.data.body,
+        //  time: moment().format('MMMM Do YYYY, h:mm:ss a')
+        //
+        //}, function (err, number, raw) {
+        //
+        //  var status = {
+        //    status: 'null'
+        //  };
+        //
+        //  res.setHeader('content-type', 'application/json');
+        //
+        //  if (err) {
+        //    console.log("\nError updating article");
+        //    status.status = 'ERROR-UPDATE';
+        //  } else {
+        //    console.log("\nUpdated article - " + req.params.title);
+        //    status.status = 'UPDATED';
+        //
+        //
+        //    if (titleUpdated) {
+        //      var article = new Article({
+        //        title: paramTitle,
+        //        body: '#REDIRECT [[' + req.body.data.title + ']]',
+        //        time: moment().format('MMMM Do YYYY, h:mm:ss a')
+        //      });
+        //
+        //      article.save(function (err) {
+        //        if (err) {
+        //          console.log("\nError creating redirect for " + paramTitle + " to " + req.body.data.title);
+        //        } else {
+        //          console.log("\nCreated redirect for " + paramTitle + " to " + req.body.data.title);
+        //        }
+        //      });
+        //    }
+        //  }
+        //
+        //  return res.send(JSON.stringify(status));
+        //
+        //
+        //});
       }
     });
 

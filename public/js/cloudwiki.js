@@ -2,9 +2,9 @@
 
 $(document).ready(function() {
 
-  $('#searchForm').on('submit', function(e) {
+  $('.searchForm').on('submit', function(e) {
     e.preventDefault();
-    window.location.href = '/search/' + $('#search').val();
+    window.location.href = '/search/' + $(this).find('.search').val();
   });
 
   $('#editArticle').on('click', function() {

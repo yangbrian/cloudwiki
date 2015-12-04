@@ -28,3 +28,7 @@
 
    - name: Add to Startup
      copy: src=/root/ansible/startup dest=/etc/rc.local owner=root group=root mode=0755
+
+   # add nodejs service to upstart
+   #- name: add nodejs to upstart
+   #  copy: src=/root/config/nodejs/cloudwiki.conf dest=/etc/init/cloudwiki.conf owner=root group=root mode=0644

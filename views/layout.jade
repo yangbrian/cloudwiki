@@ -45,7 +45,10 @@ html
           //      a(href='/#') One more separated link
         ul.nav.navbar-nav.navbar-right
           li
-            a(href='#') More coming soon!
+            form.searchForm.form-inline#headerSearch
+              input.search.form-control(type='text', placeholder='Search for an article!')
+
+              input.searchButton.btn.btn-success(type='submit', value='Search')
         //  li.active
         //    a(href='./')
         //      | Default
