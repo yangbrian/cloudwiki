@@ -161,16 +161,16 @@ router.post('/:title', upload.array(), function (req, res, next) {
           Article.update({
             title: toUpperCase(req.params.title.replace(/_/g, " "))
           }, { '$set' : {
-            title: toUpperCase(req.params.title.replace(/_/g, " ")),
+            title: toUpperCase(req.body.data.title) || toUpperCase(req.params.title.replace(/_/g, " ")),
             body: req.body.data.body,
             time: moment().format('MMMM Do YYYY, h:mm:ss a')
 
           }}, { upsert: true }, function (err, number, raw) {
 
-            console.log(number);
             if (err) {
               console.log("\nError updating article");
               status.status = 'ERROR-UPDATE';
+              status.error = err;
             } else if (number.upserted) {
               console.log("\nCreated article = " + req.params.title);
               status.status = "CREATED";
